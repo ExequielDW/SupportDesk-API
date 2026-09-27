@@ -1,0 +1,116 @@
+# ==========================================
+# Entorno y Variables de Entorno (CRÍTICO)
+# ==========================================
+.env
+.env.*
+!.env.example
+*.env
+
+# ==========================================
+# Entornos Virtuales de Python
+# ==========================================
+venv/
+v-env/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# ==========================================
+# Caché y Archivos de Ejecución de Python
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# ==========================================
+# Pruebas y Cobertura (Testing)
+# ==========================================
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.nox/
+.hypothesis/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.mpy_uploads/
+
+# ==========================================
+# Editores e IDEs (VS Code, PyCharm, etc.)
+# ==========================================
+# VS Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# PyCharm / JetBrains
+.idea/
+
+# Sublime Text / Eclipse
+*.sublime-workspace
+*.sublime-project
+.project
+.pydevproject
+
+# ==========================================
+# Archivos del Sistema Operativo
+# ==========================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+
+# ==========================================
+# Archivos Temporales y Logs
+# ==========================================
+*.log
+logs/
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# ==========================================
+# Docker y Base de Datos Local
+# ==========================================
+# En caso de guardar dumps o data local de MongoDB
+*.dump
+*.bson
+mongo-data/

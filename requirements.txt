@@ -1,0 +1,8 @@
+fastapi>=0.110.0
+uvicorn[standard]>=0.28.0
+pydantic[email]>=2.6.0
+pymongo>=4.6.0
+slowapi>=0.1.9
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+python-decouple>=3.8
