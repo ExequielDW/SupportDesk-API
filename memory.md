@@ -1,7 +1,7 @@
 # MEMORY — contexto vivo del proyecto
 
 <!-- autogenerado:cabecera -->
-> **Actualizado:** 2026-10-20 19:23 · **Commit:** `b538dc0` · **Rama:** `master`
+> **Actualizado:** 2026-10-20 19:24 · **Commit:** `ec2b1e9` · **Rama:** `master`
 <!-- autogenerado:/cabecera -->
 
 > Este archivo se actualiza al cerrar cada tarea (ver `AGENTS.md`, regla 9).
