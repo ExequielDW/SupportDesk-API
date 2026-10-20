@@ -65,7 +65,7 @@ def _filtro_ticket(id: str, user: User) -> dict:
     return filtro
 
 
-@router.post("/created", response_model=TicketResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/created", summary="Crea un ticket", response_model=TicketResponse, status_code=status.HTTP_201_CREATED)
 @limiter.limit("10/minute")
 async def creating_ticket(
     request: Request, ticket: TicketCreate, user: User = Depends(current_user), db=Depends(get_db)
@@ -74,7 +74,7 @@ async def creating_ticket(
     return TicketResponse(**nuevo)
 
 
-@router.get("/me/{id}", status_code=status.HTTP_200_OK, response_model=TicketResponse)
+@router.get("/me/{id}", summary="Devuelve un ticket por id", status_code=status.HTTP_200_OK, response_model=TicketResponse)
 async def get_ticket_by_id(id: str, user: User = Depends(current_user), db=Depends(get_db)):
     if not ObjectId.is_valid(id):
         raise HTTPException(
@@ -86,7 +86,7 @@ async def get_ticket_by_id(id: str, user: User = Depends(current_user), db=Depen
     return TicketResponse(**_a_respuesta(ticket))
 
 
-@router.put("/update/{id}", status_code=status.HTTP_200_OK, response_model=TicketResponse)
+@router.put("/update/{id}", summary="Actualiza un ticket", status_code=status.HTTP_200_OK, response_model=TicketResponse)
 @limiter.limit("10/minute")
 async def update_ticket(
     request: Request,
@@ -120,7 +120,7 @@ async def update_ticket(
     return TicketResponse(**_a_respuesta(actualizacion))
 
 
-@router.get("/me", status_code=status.HTTP_200_OK, response_model=list[TicketResponse])
+@router.get("/me", summary="Lista los tickets del usuario, con filtros y paginación", status_code=status.HTTP_200_OK, response_model=list[TicketResponse])
 @limiter.limit("30/minute")
 async def filter_my_tickets(
     request: Request,
@@ -148,7 +148,7 @@ async def filter_my_tickets(
     return [TicketResponse(**_a_respuesta(doc)) for doc in documentos]
 
 
-@router.get("/stats", status_code=status.HTTP_200_OK)
+@router.get("/stats", summary="Estadísticas de los tickets del usuario", status_code=status.HTTP_200_OK)
 async def estadistica(user: User = Depends(current_user), db=Depends(get_db)):
     """Estadísticas de los tickets del usuario (cacheadas por 30 s)."""
     clave = f"stats:{user.id}"
@@ -161,7 +161,7 @@ async def estadistica(user: User = Depends(current_user), db=Depends(get_db)):
     return estadisticas
 
 
-@router.get("", status_code=status.HTTP_200_OK, response_model=list[TicketResponse])
+@router.get("", summary="Lista todos los tickets (soporte y admin)", status_code=status.HTTP_200_OK, response_model=list[TicketResponse])
 @limiter.limit("30/minute")
 async def listar_tickets(
     request: Request,
@@ -192,7 +192,7 @@ async def listar_tickets(
     return [TicketResponse(**_a_respuesta(doc)) for doc in documentos]
 
 
-@router.get("/stats/global", status_code=status.HTTP_200_OK)
+@router.get("/stats/global", summary="Estadísticas de todos los tickets", status_code=status.HTTP_200_OK)
 async def estadisticas_globales(
     propietario: str | None = None,
     user: User = Depends(require_soporte),
@@ -203,7 +203,7 @@ async def estadisticas_globales(
     return await _calcular_estadisticas(db, consulta)
 
 
-@router.patch("/{id}/estado", status_code=status.HTTP_200_OK, response_model=TicketResponse)
+@router.patch("/{id}/estado", summary="Cambia el estado de un ticket", status_code=status.HTTP_200_OK, response_model=TicketResponse)
 async def cambiar_estado(
     id: str,
     datos: TicketEstadoUpdate,

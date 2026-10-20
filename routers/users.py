@@ -68,7 +68,7 @@ def _invalidar_cookie(response: Response) -> None:
     response.delete_cookie(COOKIE_NAME, path="/usuarios")
 
 
-@router.post("/register", response_model=User, status_code=status.HTTP_201_CREATED)
+@router.post("/register", summary="Registra un usuario nuevo", response_model=User, status_code=status.HTTP_201_CREATED)
 @limiter.limit("3/minute")
 async def registro(request: Request, datos: UserCreate, db=Depends(get_db)):
     usuario = await crear_usuario(db, datos)
@@ -76,7 +76,7 @@ async def registro(request: Request, datos: UserCreate, db=Depends(get_db)):
     return User(**usuario)
 
 
-@router.post("/login", status_code=status.HTTP_200_OK)
+@router.post("/login", summary="Inicia sesión y devuelve un access token", status_code=status.HTTP_200_OK)
 @limiter.limit("5/minute")
 async def loginme(
     request: Request,
@@ -166,7 +166,7 @@ async def loginme(
     }
 
 
-@router.post("/refresh", status_code=status.HTTP_200_OK)
+@router.post("/refresh", summary="Rota el refresh token y devuelve uno nuevo", status_code=status.HTTP_200_OK)
 async def refrescar(request: Request, response: Response, db=Depends(get_db)):
     """Rota el refresh token y devuelve un access token nuevo."""
     token = request.cookies.get(COOKIE_NAME)
@@ -258,7 +258,7 @@ async def refrescar(request: Request, response: Response, db=Depends(get_db)):
     }
 
 
-@router.post("/logout", status_code=status.HTTP_200_OK)
+@router.post("/logout", summary="Cierra la sesión y revoca los tokens", status_code=status.HTTP_200_OK)
 async def logout(request: Request, response: Response):
     """Cierra la sesión: revoca el refresh y el access actual."""
     token = request.cookies.get(COOKIE_NAME)
@@ -286,12 +286,12 @@ async def logout(request: Request, response: Response):
     return {"mensaje": "Sesión cerrada"}
 
 
-@router.get("/me", response_model=User, status_code=status.HTTP_200_OK)
+@router.get("/me", summary="Devuelve el perfil del usuario autenticado", response_model=User, status_code=status.HTTP_200_OK)
 async def userme(user: User = Depends(current_user)):
     return user
 
 
-@router.patch("/{id}/rol", response_model=User, status_code=status.HTTP_200_OK)
+@router.patch("/{id}/rol", summary="Asigna un rol a un usuario (solo admin)", response_model=User, status_code=status.HTTP_200_OK)
 async def cambiar_rol(
     id: str, datos: UserUpdateRol, request: Request, db=Depends(get_db),
     user: User = Depends(require_admin),
@@ -325,7 +325,7 @@ async def cambiar_rol(
     return User(**actualizado)
 
 
-@router.patch("/{id}/estado", response_model=User, status_code=status.HTTP_200_OK)
+@router.patch("/{id}/estado", summary="Habilita o deshabilita una cuenta (solo admin)", response_model=User, status_code=status.HTTP_200_OK)
 async def cambiar_estado(
     id: str, datos: UserUpdateEstado, request: Request, db=Depends(get_db),
     user: User = Depends(require_admin),
