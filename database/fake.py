@@ -1,9 +1,13 @@
-"""Fake de MongoDB en memoria para los tests.
+"""MongoDB en memoria para correr la API sin ninguna infraestructura.
 
-Implementa la parte de la API que usa la aplicación (insert, find, update,
-aggregate, índices únicos) para que la suite corra **sin** Atlas y sin Redis.
+Sirve para dos cosas:
+1. Los tests: no necesitan Atlas (ni Redis) para correr.
+2. El "modo demo" (`MONGODB_FAKE=true` en el `.env`): la API levanta y
+   funciona completa sin cluster, sin Docker y sin Redis. Los datos viven en
+   memoria y se pierden al reiniciar el proceso.
 
-No pretende ser un MongoDB completo: cubre lo que la app necesita.
+Implementa la parte de la API de Mongo que usa la aplicación (insert, find,
+update, aggregate e índices únicos). No pretende ser un MongoDB completo.
 """
 
 import copy

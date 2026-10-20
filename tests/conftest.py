@@ -14,10 +14,10 @@ from fastapi.testclient import TestClient
 os.environ.setdefault("ALLOWED_HOSTS", "testserver,localhost,127.0.0.1")
 
 import database.client as db_client
+from database.fake import BaseDeDatosFalsa
 from main import app
 from routers.auth import limiter
 from services.cache import cache
-from tests.fakes import BaseDeDatosFalsa
 
 
 @pytest.fixture(autouse=True)

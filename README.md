@@ -38,11 +38,12 @@ SupportDesk API/
 ├── main.py                # app FastAPI, lifespan, middlewares
 ├── database/
 │   ├── client.py          # AsyncMongoClient + get_db()
+│   ├── fake.py            # MongoDB en memoria (modo demo y tests)
 │   └── indexes.py         # índices (unique por usuario/email, por propietario)
 ├── models/                # Pydantic v2 (user con roles, ticket con transiciones)
 ├── routers/               # endpoints (auth, users, tickets)
 ├── services/              # security (hash+JWT), authz (RBAC), cache, ratelimit, audit, validators, schemas
-├── utils/                 # middlewares, agregaciones
+├── utils/middlewares.py   # límite de body, headers de seguridad, tiempo de respuesta
 ├── scripts/               # bench, check_indexes, migrate_db
 ├── tests/                 # fakes en memoria + suite
 └── docs/                  # PLAN.md, SECURITY.md, adr/
@@ -52,22 +53,30 @@ SupportDesk API/
 
 ## 🚀 Puesta en marcha
 
+**Modo demo (sin cluster, sin Docker, sin Redis)** — la API levanta y funciona
+completa con los datos en memoria:
+
 ```bash
-# 1. Dependencias
 pip install -r requirements.txt
-
-# 2. Variables de entorno
 cp .env.example .env      # en Windows: copy .env.example .env
-# completá URI, SECRET_KEY y (opcional) REDIS_URL
-
-# 3. Redis (opcional en desarrollo, hay fallback en memoria)
-docker compose up -d redis
-
-# 4. Correr
+# en .env: MONGODB_FAKE=true
 uvicorn main:app --reload --port 8000
 ```
 
-Documentación interactiva: <http://localhost:8000/docs> (deshabilitada con `ENVIRONMENT=production`).
+**Con MongoDB real** (Atlas o un Mongo local):
+
+```bash
+# en .env: MONGODB_FAKE=false y la URI completa
+uvicorn main:app --reload --port 8000
+```
+
+Documentación interactiva: <http://localhost:8000/docs> (se deshabilita con `ENVIRONMENT=production`).
+
+### Redis (opcional)
+
+`REDIS_URL` puede quedar vacío: la app usa un cache en memoria. Con Redis se
+comparten entre procesos los refresh tokens, la revocación, el rate limit por
+usuario y el cache de usuario.
 
 ---
 

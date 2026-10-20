@@ -9,10 +9,11 @@ API REST de gestión de tickets de soporte técnico. FastAPI + MongoDB (PyMongo)
 # instalar
 pip install -r requirements.txt
 
-# correr (desarrollo)
+# correr (desarrollo) - modo demo: sin cluster, sin Docker, sin Redis
+# en .env: MONGODB_FAKE=true
 uvicorn main:app --reload --port 8000
 
-# tests (no necesitan Mongo ni Redis: usan fakes en memoria)
+# tests (no necesitan Mongo ni Redis: usan el fake en memoria)
 pytest -q
 
 # benchmark de latencia (p50/p95/p99/RPS)
@@ -32,6 +33,7 @@ python scripts/migrate_db.py --apply
 config.py              # configuración central (lee .env)
 main.py                # app FastAPI, lifespan, middlewares
 database/client.py     # AsyncMongoClient + get_db()
+database/fake.py       # MongoDB en memoria (modo demo y tests)
 database/indexes.py    # creación de índices
 models/                # Pydantic v2 (user, ticket)
 routers/               # endpoints (auth, users, tickets)

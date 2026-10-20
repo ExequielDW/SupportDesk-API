@@ -12,7 +12,10 @@ ENVIRONMENT = config("ENVIRONMENT", default="development")
 IS_PRODUCTION = ENVIRONMENT.strip().lower() == "production"
 
 # --- MongoDB ---------------------------------------------------------------
-MONGODB_URI = config("URI")
+# MONGODB_FAKE=true levanta la API con un MongoDB en memoria: sirve para
+# probar la app y para la demo del repositorio, sin cluster ni Docker.
+MONGODB_FAKE = config("MONGODB_FAKE", default="false", cast=bool)
+MONGODB_URI = config("URI", default="")
 DB_NAME = config("DB_NAME", default="supportdesk")
 POOL_MAX_SIZE = int(config("POOL_MAX_SIZE", default=10))
 POOL_MIN_SIZE = int(config("POOL_MIN_SIZE", default=1))

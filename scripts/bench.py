@@ -42,9 +42,9 @@ def _percentil(valores: list[float], percentil: float) -> float:
 async def _preparar(url: str, usar_fake: bool) -> tuple[httpx.AsyncClient, str]:
     if usar_fake:
         import database.client as db_client
+        from database.fake import BaseDeDatosFalsa
         from main import app
         from routers.auth import limiter
-        from tests.fakes import BaseDeDatosFalsa
 
         # El rate limit no forma parte de la medición de la app.
         limiter.enabled = False

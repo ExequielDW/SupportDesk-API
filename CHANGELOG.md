@@ -5,6 +5,7 @@ Todas las novedades de este proyecto.
 ## [1.0.0] — Rendimiento y seguridad
 
 ### Agregado
+- **Modo demo** (`MONGODB_FAKE=true`): la API completa levanta con un MongoDB en memoria, sin cluster, sin Docker y sin Redis. Ver `docs/adr/0005-modo-demo.md`.
 - Autenticación con access token (15 min) + refresh token rotativo (7 días) en cookie `httpOnly`, con allowlist en Redis, revocación real (logout) y detección de reuso que revoca la familia de tokens.
 - Autorización RBAC con roles `usuario` / `soporte` / `admin`, dependencias `require_soporte` y `require_admin`, protección anti-escalación y regla del último administrador.
 - Endpoints nuevos: `POST /usuarios/refresh`, `POST /usuarios/logout`, `PATCH /usuarios/{id}/rol`, `PATCH /usuarios/{id}/estado`, `GET /tickets` (global), `GET /tickets/stats/global`, `PATCH /tickets/{id}/estado`.
@@ -18,6 +19,8 @@ Todas las novedades de este proyecto.
 - Suite de tests sobre un fake de Mongo en memoria (36 tests, sin necesidad de Atlas ni Redis).
 
 ### Cambiado
+- El fake de MongoDB pasó de `tests/fakes.py` a `database/fake.py`, para que la app y los tests usen la misma implementación.
+- Redis es **opcional**: sin `REDIS_URL` la app usa un cache en memoria (funcional, pero por proceso).
 - Migración del driver a `AsyncMongoClient` (pymongo >= 4.13): el acceso a datos ya no bloquea el event loop.
 - El nombre de la base sale de `DB_NAME` (antes estaba hardcodeado como `suport`).
 - Hashing de contraseñas con Argon2id `t=2, m=19 MiB, p=1` ejecutado en un threadpool (antes `t=3, m=64 MiB` dentro del event loop). Los hashes existentes siguen validando.

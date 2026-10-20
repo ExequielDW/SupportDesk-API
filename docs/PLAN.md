@@ -84,12 +84,30 @@ Cada fase se committeó por separado. Los commits se ordenan así:
 
 ### Pendiente que requiere acción del dueño
 
-1. **Redis**: `docker compose up -d redis` y poner `REDIS_URL` en `.env` (hoy corre con cache en memoria: solo sirve para **un** proceso).
-2. **Rotar la contraseña de Atlas**: la del `.env` local debe considerarse filtrada. Crear además un usuario de BD con rol `readWrite` solo sobre `supportdesk` e IP allowlist.
-3. **Migrar los datos**: `python scripts/migrate_db.py --dry-run` y luego `--apply` (el cluster no resuelve por DNS desde la máquina de desarrollo).
-4. **Verificar índices contra Atlas**: `python scripts/check_indexes.py` (debe dar `IXSCAN` en las 4 queries hot).
-5. **`ALLOWED_HOSTS` y `CORS_ORIGINS`** reales antes de desplegar.
-6. **Reiniciar con `--workers N`** y decidir si el limiter de SlowAPI debe apuntar a Redis (hoy usa storage en memoria, que es **por proceso**).
+El proyecto quedó **funcional en local sin ninguna infraestructura externa**
+(modo demo con `MONGODB_FAKE=true`). Lo siguiente solo hace falta si en el
+futuro se quiere usar un cluster real o desplegarlo:
+
+1. **El cluster de Atlas anterior ya no existe** (`mongoa.i8jibjk.mongodb.net`
+   no resuelve). Para usar Mongo real hay que crear un cluster nuevo en Atlas
+   (o instalar Mongo local) y poner la URI en `.env` con `MONGODB_FAKE=false`.
+2. **Rotar la contraseña de Atlas**: la del `.env` local debe considerarse
+   filtrada. Crear además un usuario de BD con rol `readWrite` solo sobre
+   `supportdesk` e IP allowlist.
+3. **Migrar los datos**: `python scripts/migrate_db.py --dry-run` y luego
+   `--apply` (solo tiene sentido si el cluster viejo vuelve a estar accesible).
+4. **Verificar índices contra Atlas**: `python scripts/check_indexes.py` (debe
+   dar `IXSCAN` en las 4 queries hot).
+5. **Redis es opcional**: sin él la app usa cache en memoria (funcional, pero
+   por proceso y sin compartir entre workers).
+6. **`ALLOWED_HOSTS` y `CORS_ORIGINS`** reales solo importan si se despliega.
+
+## Modo demo (`MONGODB_FAKE=true`)
+
+El fake de MongoDB en memoria (`database/fake.py`) permite levantar la API sin
+cluster, sin Docker y sin Redis: es lo que usan los tests y lo que permite
+clonar el repo y probarlo en un minuto. Los datos viven en memoria y se
+pierden al reiniciar el proceso. Ver `docs/adr/0005-modo-demo.md`.
 
 ## Fuera de alcance (anotado para más adelante)
 

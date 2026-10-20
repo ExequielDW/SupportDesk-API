@@ -23,6 +23,10 @@ Nunca dejar el valor viejo en el historial de la terminal compartida ni en un ti
 
 ## 2. Checklist antes de producción
 
+> Este proyecto está pensado para correr **en local** (modo demo o contra un
+> Mongo propio) y publicarse en GitHub, no para exponerse en internet. La
+> lista de abajo aplica **solo si algún día se decide desplegarlo**.
+
 - [ ] `ENVIRONMENT=production` en `.env` → `/docs`, `/redoc` y `/openapi.json` devuelven 404.
 - [ ] `COOKIE_SECURE=true` (HTTPS obligatorio).
 - [ ] `ALLOWED_HOSTS` con los dominios reales ( TrustedHostMiddleware ).
@@ -38,6 +42,16 @@ Nunca dejar el valor viejo en el historial de la terminal compartida ni en un ti
 - [ ] HTTPS terminado en el proxy + HSTS activo.
 - [ ] `uvicorn` **sin** `--reload` y **con** `--workers N`.
 - [ ] `/health` expuesto solo en la red interna.
+
+### Lo que aplica siempre (ya está en el código)
+
+- [x] `.env` fuera de git, `.env.example` sin secretos.
+- [x] `rol` y `disabled` los asigna el servidor.
+- [x] Login sin enumeración de cuentas.
+- [x] Rate limit por IP y por usuario.
+- [x] Refresh tokens revocables, con rotación y detección de reuso.
+- [x] Aislamiento por propietario en todos los endpoints de tickets.
+- [x] Límites de longitud, límite de body y headers de seguridad.
 
 ## 3. Controles implementados
 
