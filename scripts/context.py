@@ -34,6 +34,10 @@ MAPA = "mapa"
 API = "api"
 VERIFICACION = "verificacion"
 
+# Bloques que se comparan en --check. La cabecera lleva la fecha y el commit
+# del último update: siempre queda un commit atrás, así que no se compara.
+BLOQUES_COMPARABLES = (MAPA, API, VERIFICACION)
+
 # Archivos que no se listan en el mapa (no son código).
 EXCLUIDOS = {
     ".git",
@@ -267,8 +271,8 @@ def main() -> None:
         texto = MEMORY.read_text(encoding="utf-8")
         desactualizado = [
             nombre
-            for nombre, contenido in bloques.items()
-            if _leer_bloque(texto, nombre) != contenido
+            for nombre in BLOQUES_COMPARABLES
+            if _leer_bloque(texto, nombre) != bloques[nombre]
         ]
         if desactualizado:
             print(f"memory.md está desactualizado: {', '.join(desactualizado)}")
