@@ -5,6 +5,11 @@ Todas las novedades de este proyecto.
 ## [1.0.0] — Rendimiento y seguridad
 
 ### Agregado
+- **Contexto vivo del proyecto**: `memory.md` (estado real, decisiones, preferencias, skills, pendientes) +
+  reglas 9-12 en `AGENTS.md` (contexto vivo, una sola fuente por dato, skills y preferencias, cero secretos).
+- `scripts/context.py`: regenera el mapa del código, la superficie de la API y el estado de la verificación
+  dentro de `memory.md` (`--update` / `--check`), para no reexplorar el repo en cada sesión.
+- Resúmenes en español en las rutas: la documentación de `/docs` queda legible.
 - **Modo demo** (`MONGODB_FAKE=true`): la API completa levanta con un MongoDB en memoria, sin cluster, sin Docker y sin Redis. Ver `docs/adr/0005-modo-demo.md`.
 - Autenticación con access token (15 min) + refresh token rotativo (7 días) en cookie `httpOnly`, con allowlist en Redis, revocación real (logout) y detección de reuso que revoca la familia de tokens.
 - Autorización RBAC con roles `usuario` / `soporte` / `admin`, dependencias `require_soporte` y `require_admin`, protección anti-escalación y regla del último administrador.

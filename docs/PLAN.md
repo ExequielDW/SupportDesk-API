@@ -32,6 +32,9 @@ Cada fase se committeó por separado. Los commits se ordenan así:
 | 5 | `feat: autenticacion con refresh rotativo y autorizacion RBAC` | `services/security.py`, `services/authz.py`, `services/validators.py`, `services/schemas.py`, `routers/` | ✅ |
 | 6 | `test: suite de tests con fakes en memoria y scripts de operacion` | `tests/`, `scripts/` | ✅ |
 | 7 | `docs: actualizar README y changelog` | `README.md`, `CHANGELOG.md` | ✅ |
+| 8 | `feat: contexto vivo del proyecto (memory.md + regla en AGENTS.md)` | `AGENTS.md`, `memory.md` | ✅ |
+| 9 | `feat: script de contexto autogenerado (scripts/context.py)` | `scripts/context.py` | ✅ |
+| 10 | `chore: resumenes en espanol en las rutas de la API` | `routers/` | ✅ |
 
 > Nota: las fases F1-F8 del plan original se agruparon en los commits 3-5
 > porque el modelo, los servicios y los routers se modifican juntos: un
