@@ -1,0 +1,35 @@
+version: "3.9"
+
+# Servicios de apoyo para desarrollo.
+# Redis es el backing store de los refresh tokens, la revocación, el cache de
+# usuario, las estadísticas y el rate limit por usuario.
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: supportdesk-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes", "--requirepass", "supportdesk"]
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "supportdesk", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # Mongo local, solo para desarrollo y tests de integración opcionales.
+  # La app se conecta a Atlas en producción (ver .env).
+  mongo:
+    image: mongo:7
+    container_name: supportdesk-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  redis_data:
+  mongo_data:
